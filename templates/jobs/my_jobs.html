@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Jobs | HireFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">
+                My Jobs
+            </h1>
+
+            <p class="text-muted">
+                Manage the jobs you have posted.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'create_job' %}"
+            class="btn btn-primary"
+        >
+            + Post New Job
+        </a>
+
+    </div>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="row g-4">
+
+        {% for job in jobs %}
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold">
+                        {{ job.title }}
+                    </h4>
+
+                    <p class="text-muted mb-2">
+                        {{ job.company }}
+                    </p>
+
+                    <p>
+                        📍 {{ job.location }}
+                    </p>
+
+                    <p>
+                        💰 ₹{{ job.salary }}
+                    </p>
+
+                    <p>
+                        💼 {{ job.job_type }}
+                    </p>
+
+                    <p>
+                        📄 Applications:
+                        <strong>
+                            {{ job.applications.count }}
+                        </strong>
+                    </p>
+
+                    <hr>
+
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <a
+                            href="{% url 'job_detail' job.id %}"
+                            class="btn btn-primary"
+                        >
+                            View
+                        </a>
+
+                        <a
+                            href="{% url 'edit_job' job.id %}"
+                            class="btn btn-warning"
+                        >
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'delete_job' job.id %}"
+                            class="btn btn-danger"
+                        >
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="alert alert-info">
+
+                You have not posted any jobs yet.
+
+                <a href="{% url 'create_job' %}">
+                    Post your first job
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

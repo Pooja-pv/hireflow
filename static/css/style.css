@@ -1,0 +1,53 @@
+body {
+    background: #f8f9fa;
+    color: #212529;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    border: none;
+    border-radius: 14px;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    transition: 0.2s ease;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: none;
+}
+
+.dashboard-card {
+    transition: 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+}
+
+footer {
+    margin-top: 80px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.badge {
+    font-size: 0.85rem;
+}

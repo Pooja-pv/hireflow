@@ -1,0 +1,5 @@
+Django==5.2.17
+mysqlclient
+djangorestframework
+django-cors-headers
+Pillow
