@@ -1,0 +1,30 @@
+
+__pycache__/
+*.py[cod]
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Database files and backups
+db.sqlite3
+*.sql
+
+# User-uploaded files and collected static files
+media/
+staticfiles/
+
+# IDE settings
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store

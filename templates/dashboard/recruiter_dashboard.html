@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}
+Recruiter Dashboard | HireFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="mb-5">
+
+        <h1 class="fw-bold">
+            Recruiter Dashboard
+        </h1>
+
+        <p class="text-muted">
+            Manage your hiring process from one place.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm dashboard-card">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-1">
+                        Jobs Posted
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ jobs_count }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm dashboard-card">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-1">
+                        Applications
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ applications_count }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm dashboard-card">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-1">
+                        Shortlisted
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ shortlisted_count }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm dashboard-card">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-1">
+                        Hired
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ hired_count }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold">
+                        Post a Job
+                    </h4>
+
+                    <p class="text-muted">
+                        Create a new job opportunity.
+                    </p>
+
+                    <a
+                        href="{% url 'create_job' %}"
+                        class="btn btn-primary"
+                    >
+                        Post Job
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold">
+                        My Jobs
+                    </h4>
+
+                    <p class="text-muted">
+                        Manage your job postings.
+                    </p>
+
+                    <a
+                        href="{% url 'my_jobs' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        Manage Jobs
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold">
+                        Applications
+                    </h4>
+
+                    <p class="text-muted">
+                        Review candidates.
+                    </p>
+
+                    <a
+                        href="{% url 'recruiter_applications' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        View Applications
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

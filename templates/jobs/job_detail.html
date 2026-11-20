@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ job.title }} | HireFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body p-5">
+
+                    <h1 class="fw-bold">
+                        {{ job.title }}
+                    </h1>
+
+                    <h5 class="text-muted mb-4">
+                        {{ job.company }}
+                    </h5>
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <p>
+                                <strong>Location:</strong>
+                                {{ job.location }}
+                            </p>
+
+                            <p>
+                                <strong>Job Type:</strong>
+                                {{ job.job_type }}
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <p>
+                                <strong>Salary:</strong>
+                                ₹{{ job.salary }}
+                            </p>
+
+                            <p>
+                                <strong>Posted:</strong>
+                                {{ job.created_at|date:"d M Y" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <h4 class="fw-bold mt-4">
+                        Job Description
+                    </h4>
+
+                    <div>
+                        {{ job.description|linebreaks }}
+                    </div>
+
+
+                    <h4 class="fw-bold mt-4">
+                        Requirements
+                    </h4>
+
+                    <div>
+                        {{ job.requirements|linebreaks }}
+                    </div>
+
+
+                    <h4 class="fw-bold mt-4">
+                        Skills
+                    </h4>
+
+                    <p>
+                        {{ job.skills }}
+                    </p>
+
+
+                    <hr class="my-4">
+
+
+                    {% if user.role == "Recruiter" %}
+
+                        {% if job.recruiter == user %}
+
+                            <a
+                                href="{% url 'edit_job' job.id %}"
+                                class="btn btn-warning"
+                            >
+                                Edit Job
+                            </a>
+
+                            <a
+                                href="{% url 'delete_job' job.id %}"
+                                class="btn btn-danger"
+                            >
+                                Delete Job
+                            </a>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        {% if already_applied %}
+
+                            <div class="alert alert-success">
+                                You have already applied for this job.
+                            </div>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'apply_job' job.id %}"
+                                class="btn btn-primary"
+                            >
+                                Apply Now
+                            </a>
+
+                        {% endif %}
+
+                    {% endif %}
+
+
+                    <a
+                        href="{% url 'job_list' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Back to Jobs
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
