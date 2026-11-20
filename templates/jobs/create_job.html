@@ -1,217 +1,260 @@
 {% extends "base.html" %}
 
-{% block title %}
-Post a Job | HireFlow
-{% endblock %}
+{% block title %}Post a Job | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .create-job-page {
+        background: #f8fafc;
+        min-height: 80vh;
+        padding: 48px 0 64px;
+    }
 
-    <div class="row justify-content-center">
+    .create-job-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
-        <div class="col-lg-8">
+    .create-job-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 36px;
+    }
 
-            <div class="card shadow-sm">
+    .create-job-heading {
+        margin-bottom: 30px;
+    }
 
-                <div class="card-body p-4">
+    .create-job-heading h1 {
+        color: #172033;
+        font-size: 27px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
 
-                    <h2 class="fw-bold mb-4">
-                        Post a New Job
-                    </h2>
+    .create-job-heading p {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
 
-                    <form method="POST">
+    .create-job-form label {
+        display: block;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-                        {% csrf_token %}
+    .create-job-form .form-control,
+    .create-job-form .form-select {
+        border: 1px solid #dbe1e8;
+        border-radius: 6px;
+        padding: 11px 13px;
+        font-size: 14px;
+        color: #172033;
+    }
 
-                        <div class="mb-3">
+    .create-job-form .form-control:focus,
+    .create-job-form .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
 
-                            <label class="form-label">
-                                Job Title
-                            </label>
+    .create-job-form textarea {
+        resize: vertical;
+        line-height: 1.6;
+    }
 
-                            <input
-                                type="text"
-                                name="title"
-                                class="form-control"
-                                placeholder="e.g. Python Developer"
-                                required
-                            >
+    .create-job-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+    }
 
-                        </div>
+    .create-job-actions button,
+    .create-job-actions a {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
+    .post-job-submit {
+        background: #2563eb;
+        color: white;
+        border: none;
+    }
 
-                        <div class="mb-3">
+    .post-job-submit:hover {
+        background: #1d4ed8;
+    }
 
-                            <label class="form-label">
-                                Company
-                            </label>
+    .cancel-job {
+        background: #f1f5f9;
+        color: #334155;
+    }
 
-                            <input
-                                type="text"
-                                name="company"
-                                class="form-control"
-                                placeholder="e.g. ABC Technologies"
-                                required
-                            >
+    .cancel-job:hover {
+        background: #e2e8f0;
+        color: #172033;
+    }
 
-                        </div>
+    @media (max-width: 576px) {
+        .create-job-page {
+            padding: 25px 0 40px;
+        }
 
+        .create-job-card {
+            padding: 22px;
+        }
 
-                        <div class="mb-3">
+        .create-job-actions {
+            flex-direction: column;
+        }
 
-                            <label class="form-label">
-                                Location
-                            </label>
+        .create-job-actions button,
+        .create-job-actions a {
+            text-align: center;
+        }
+    }
+</style>
 
-                            <input
-                                type="text"
-                                name="location"
-                                class="form-control"
-                                placeholder="e.g. Kochi / Remote"
-                                required
-                            >
+<div class="create-job-page">
+    <div class="create-job-container">
 
-                        </div>
+        <div class="create-job-card">
 
+            <div class="create-job-heading">
+                <h1>Post a New Job</h1>
+                <p>Fill in the details below to publish a job opportunity.</p>
+            </div>
 
-                        <div class="mb-3">
+            <form method="POST" class="create-job-form">
+                {% csrf_token %}
 
-                            <label class="form-label">
-                                Salary
-                            </label>
-
-                            <input
-                                type="number"
-                                name="salary"
-                                class="form-control"
-                                placeholder="e.g. 600000"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Job Type
-                            </label>
-
-                            <select
-                                name="job_type"
-                                class="form-select"
-                                required
-                            >
-
-                                <option value="">
-                                    Select Job Type
-                                </option>
-
-                                <option value="Full Time">
-                                    Full Time
-                                </option>
-
-                                <option value="Part Time">
-                                    Part Time
-                                </option>
-
-                                <option value="Internship">
-                                    Internship
-                                </option>
-
-                                <option value="Contract">
-                                    Contract
-                                </option>
-
-                                <option value="Remote">
-                                    Remote
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Skills
-                            </label>
-
-                            <input
-                                type="text"
-                                name="skills"
-                                class="form-control"
-                                placeholder="Python, Django, MySQL, REST API"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Requirements
-                            </label>
-
-                            <textarea
-                                name="requirements"
-                                class="form-control"
-                                rows="5"
-                                placeholder="Enter job requirements..."
-                                required
-                            ></textarea>
-
-                        </div>
-
-
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Job Description
-                            </label>
-
-                            <textarea
-                                name="description"
-                                class="form-control"
-                                rows="6"
-                                placeholder="Describe the job..."
-                                required
-                            ></textarea>
-
-                        </div>
-
-
-                        <div class="d-flex gap-2">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-                                Post Job
-                            </button>
-
-                            <a
-                                href="{% url 'dashboard' %}"
-                                class="btn btn-outline-secondary"
-                            >
-                                Cancel
-                            </a>
-
-                        </div>
-
-                    </form>
-
+                <div class="mb-3">
+                    <label for="title">Job Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        class="form-control"
+                        placeholder="e.g. Python Developer"
+                        required
+                    >
                 </div>
 
-            </div>
+                <div class="mb-3">
+                    <label for="company">Company</label>
+                    <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        class="form-control"
+                        placeholder="e.g. ABC Technologies"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="location">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        class="form-control"
+                        placeholder="e.g. Kochi / Remote"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="salary">Salary</label>
+                    <input
+                        type="number"
+                        id="salary"
+                        name="salary"
+                        class="form-control"
+                        placeholder="e.g. 600000"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="job_type">Job Type</label>
+                    <select
+                        id="job_type"
+                        name="job_type"
+                        class="form-select"
+                        required
+                    >
+                        <option value="">Select Job Type</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="skills">Skills</label>
+                    <input
+                        type="text"
+                        id="skills"
+                        name="skills"
+                        class="form-control"
+                        placeholder="Python, Django, MySQL, REST API"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="requirements">Requirements</label>
+                    <textarea
+                        id="requirements"
+                        name="requirements"
+                        class="form-control"
+                        rows="5"
+                        placeholder="Enter job requirements..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description">Job Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="6"
+                        placeholder="Describe the job..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="create-job-actions">
+                    <button type="submit" class="post-job-submit">
+                        Post Job
+                    </button>
+
+                    <a href="{% url 'dashboard' %}" class="cancel-job">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
 
         </div>
 
     </div>
-
 </div>
 
 {% endblock %}

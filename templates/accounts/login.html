@@ -1,52 +1,155 @@
+
 {% extends "base.html" %}
 
 {% block title %}Login | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .login-wrapper {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+        background: #f5f7fb;
+    }
 
-    <div class="row justify-content-center">
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+        background: #ffffff;
+        padding: 42px;
+        border-radius: 18px;
+        border: 1px solid #e8ebf2;
+        box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+    }
 
-        <div class="col-md-5">
+    .login-logo {
+        width: 52px;
+        height: 52px;
+        background: #eaf0ff;
+        color: #315efb;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: 800;
+        margin: 0 auto 22px;
+    }
 
-            <div class="card shadow-sm">
+    .login-heading {
+        color: #172033;
+        font-size: 28px;
+        font-weight: 750;
+        text-align: center;
+        margin-bottom: 8px;
+    }
 
-                <div class="card-body p-4">
+    .login-subtitle {
+        color: #7b8497;
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
 
-                    <h2 class="fw-bold mb-4 text-center">
-                        Welcome Back
-                    </h2>
+    .login-card form p {
+        margin-bottom: 20px;
+    }
 
-                    <form method="POST">
+    .login-card form label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 8px;
+    }
 
-                        {% csrf_token %}
+    .login-card input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #dce1ea;
+        border-radius: 9px;
+        outline: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
 
-                        {{ form.as_p }}
+    .login-card input:focus {
+        border-color: #315efb;
+        box-shadow: 0 0 0 3px rgba(49, 94, 251, 0.10);
+    }
 
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100"
-                        >
-                            Login
-                        </button>
+    .login-btn {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 9px;
+        background: #315efb;
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+        margin-top: 8px;
+        transition: 0.2s;
+    }
 
-                    </form>
+    .login-btn:hover {
+        background: #244bd6;
+        transform: translateY(-1px);
+    }
 
-                    <p class="text-center mt-4">
+    .login-footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #7b8497;
+        font-size: 14px;
+    }
 
-                        Don't have an account?
+    .login-footer a {
+        color: #315efb;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-                        <a href="{% url 'register' %}">
-                            Create one
-                        </a>
+    .login-footer a:hover {
+        text-decoration: underline;
+    }
 
-                    </p>
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 30px 22px;
+        }
+    }
+</style>
 
-                </div>
+<div class="login-wrapper">
 
-            </div>
+    <div class="login-card">
 
+        <div class="login-logo">H</div>
+
+        <h2 class="login-heading">Welcome Back</h2>
+
+        <p class="login-subtitle">
+            Sign in to continue to your HireFlow account.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="login-btn">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="login-footer">
+            Don't have an account?
+            <a href="{% url 'register' %}">Create an account</a>
         </div>
 
     </div>

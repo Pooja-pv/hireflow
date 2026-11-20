@@ -1,236 +1,378 @@
 {% extends "base.html" %}
 
-{% block title %}
-Find Jobs | HireFlow
-{% endblock %}
+{% block title %}Find Jobs | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .jobs-page {
+        background: #f8f9fc;
+        min-height: 85vh;
+        padding: 45px 0 65px;
+    }
 
-    <div class="text-center mb-5">
+    .jobs-container {
+        max-width: 1120px;
+    }
 
-        <h1 class="fw-bold">
-            Find Your Next Opportunity
-        </h1>
+    .jobs-header {
+        margin-bottom: 30px;
+    }
 
-        <p class="text-muted">
-            Search thousands of opportunities on HireFlow.
-        </p>
+    .jobs-header h1 {
+        color: #182338;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.6px;
+        margin-bottom: 8px;
+    }
 
-    </div>
+    .jobs-header p {
+        color: #778196;
+        font-size: 14px;
+        margin: 0;
+    }
 
+    .jobs-search {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 35px;
+    }
 
-    <form method="GET" class="card shadow-sm p-4 mb-5">
+    .jobs-search label {
+        display: block;
+        color: #344054;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-        <div class="row g-3">
+    .jobs-search .form-control,
+    .jobs-search .form-select {
+        min-height: 44px;
+        border: 1px solid #dfe4ec;
+        border-radius: 7px;
+        font-size: 14px;
+        color: #263247;
+    }
 
-            <div class="col-md-5">
+    .jobs-search .form-control:focus,
+    .jobs-search .form-select:focus {
+        border-color: #315efb;
+        box-shadow: 0 0 0 3px rgba(49, 94, 251, .09);
+    }
 
-                <label class="form-label">
-                    Keyword
-                </label>
+    .jobs-search-btn {
+        background: #315efb;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 11px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
 
-                <input
-                    type="text"
-                    name="q"
-                    value="{{ query }}"
-                    class="form-control"
-                    placeholder="Python, Django, Developer..."
-                >
+    .jobs-search-btn:hover {
+        background: #244bd6;
+    }
 
-            </div>
+    .jobs-results-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
 
+    .jobs-results-heading h2 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #253047;
+        margin: 0;
+    }
 
-            <div class="col-md-4">
+    .job-card {
+        height: 100%;
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 11px;
+        padding: 23px;
+        display: flex;
+        flex-direction: column;
+        transition: .2s ease;
+    }
 
-                <label class="form-label">
-                    Location
-                </label>
+    .job-card:hover {
+        border-color: #cbd6f8;
+        box-shadow: 0 8px 22px rgba(30, 41, 59, .05);
+        transform: translateY(-2px);
+    }
 
-                <input
-                    type="text"
-                    name="location"
-                    value="{{ location }}"
-                    class="form-control"
-                    placeholder="Kochi, Bangalore, Remote..."
-                >
+    .job-card h3 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.45;
+        margin-bottom: 7px;
+    }
 
-            </div>
+    .job-company {
+        color: #667085;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
 
+    .job-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 17px;
+    }
 
-            <div class="col-md-3">
+    .job-detail {
+        background: #f3f5f9;
+        color: #596579;
+        padding: 6px 9px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
 
-                <label class="form-label">
-                    Job Type
-                </label>
+    .job-skills {
+        color: #778196;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        overflow-wrap: anywhere;
+    }
 
-                <select
-                    name="job_type"
-                    class="form-select"
-                >
+    .job-skills strong {
+        color: #344054;
+        font-weight: 600;
+    }
 
-                    <option value="">
-                        All Types
-                    </option>
+    .job-view-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        color: #315efb;
+        border: 1px solid #d6def8;
+        border-radius: 7px;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: auto;
+        transition: .2s ease;
+    }
 
-                    <option value="Full Time"
-                        {% if job_type == "Full Time" %}selected{% endif %}>
-                        Full Time
-                    </option>
+    .job-view-btn:hover {
+        background: #315efb;
+        border-color: #315efb;
+        color: #fff;
+    }
 
-                    <option value="Part Time"
-                        {% if job_type == "Part Time" %}selected{% endif %}>
-                        Part Time
-                    </option>
+    .jobs-empty {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 11px;
+        padding: 55px 20px;
+        text-align: center;
+    }
 
-                    <option value="Internship"
-                        {% if job_type == "Internship" %}selected{% endif %}>
-                        Internship
-                    </option>
+    .jobs-empty h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #253047;
+        margin-bottom: 8px;
+    }
 
-                    <option value="Contract"
-                        {% if job_type == "Contract" %}selected{% endif %}>
-                        Contract
-                    </option>
+    .jobs-empty p {
+        color: #8490a3;
+        font-size: 14px;
+        margin: 0;
+    }
 
-                    <option value="Remote"
-                        {% if job_type == "Remote" %}selected{% endif %}>
-                        Remote
-                    </option>
+    .jobs-pagination {
+        margin-top: 35px;
+    }
 
-                </select>
+    .jobs-pagination .page-link {
+        color: #315efb;
+        border-color: #e3e7ef;
+        padding: 9px 15px;
+        font-size: 13px;
+    }
 
-            </div>
+    .jobs-pagination .page-item.active .page-link {
+        background: #315efb;
+        border-color: #315efb;
+        color: #fff;
+    }
 
+    @media (max-width: 600px) {
+        .jobs-page {
+            padding: 32px 0 45px;
+        }
+
+        .jobs-header h1 {
+            font-size: 25px;
+        }
+
+        .jobs-search {
+            padding: 19px;
+        }
+
+        .jobs-results-heading {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="jobs-page">
+    <div class="container jobs-container">
+
+        <div class="jobs-header">
+            <h1>Find Your Next Opportunity</h1>
+            <p>Explore job opportunities and find a role that matches your skills.</p>
         </div>
 
+        <form method="GET" class="jobs-search">
+            <div class="row g-3 align-items-end">
 
-        <button
-            type="submit"
-            class="btn btn-primary mt-3"
-        >
-            Search Jobs
-        </button>
-
-    </form>
-
-
-    <div class="row g-4">
-
-        {% for job in page_obj %}
-
-        <div class="col-md-6 col-lg-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="fw-bold">
-                        {{ job.title }}
-                    </h4>
-
-                    <p class="text-muted">
-                        {{ job.company }}
-                    </p>
-
-                    <p>
-                        📍 {{ job.location }}
-                    </p>
-
-                    <p>
-                        💰 ₹{{ job.salary }}
-                    </p>
-
-                    <p>
-                        💼 {{ job.job_type }}
-                    </p>
-
-                    <p>
-                        <strong>Skills:</strong>
-                        {{ job.skills }}
-                    </p>
-
-                    <a
-                        href="{% url 'job_detail' job.id %}"
-                        class="btn btn-primary w-100"
+                <div class="col-md-5">
+                    <label for="job-keyword">Keyword</label>
+                    <input
+                        type="text"
+                        id="job-keyword"
+                        name="q"
+                        value="{{ query }}"
+                        class="form-control"
+                        placeholder="Job title or skills"
                     >
-                        View Job
-                    </a>
+                </div>
 
+                <div class="col-md-4">
+                    <label for="job-location">Location</label>
+                    <input
+                        type="text"
+                        id="job-location"
+                        name="location"
+                        value="{{ location }}"
+                        class="form-control"
+                        placeholder="Enter location"
+                    >
+                </div>
+
+                <div class="col-md-3">
+                    <label for="job-type">Job Type</label>
+                    <select
+                        id="job-type"
+                        name="job_type"
+                        class="form-select"
+                    >
+                        <option value="">All Types</option>
+                        <option value="Full Time" {% if job_type == "Full Time" %}selected{% endif %}>Full Time</option>
+                        <option value="Part Time" {% if job_type == "Part Time" %}selected{% endif %}>Part Time</option>
+                        <option value="Internship" {% if job_type == "Internship" %}selected{% endif %}>Internship</option>
+                        <option value="Contract" {% if job_type == "Contract" %}selected{% endif %}>Contract</option>
+                        <option value="Remote" {% if job_type == "Remote" %}selected{% endif %}>Remote</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="jobs-search-btn">
+                        Search Jobs
+                    </button>
                 </div>
 
             </div>
+        </form>
 
+        <div class="jobs-results-heading">
+            <h2>Available Opportunities</h2>
         </div>
 
-        {% empty %}
+        <div class="row g-4">
 
-        <div class="col-12">
+            {% for job in page_obj %}
 
-            <div class="alert alert-info text-center">
-                No jobs found.
+            <div class="col-md-6 col-lg-4">
+                <div class="job-card">
+
+                    <h3>{{ job.title }}</h3>
+
+                    <p class="job-company">{{ job.company }}</p>
+
+                    <div class="job-details">
+                        <span class="job-detail">{{ job.location }}</span>
+                        <span class="job-detail">{{ job.job_type }}</span>
+                        {% if job.salary %}
+                            <span class="job-detail">₹{{ job.salary }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if job.skills %}
+                    <p class="job-skills">
+                        <strong>Skills:</strong> {{ job.skills }}
+                    </p>
+                    {% endif %}
+
+                    <a
+                        href="{% url 'job_detail' job.id %}"
+                        class="job-view-btn"
+                    >
+                        View Details
+                    </a>
+
+                </div>
             </div>
 
+            {% empty %}
+
+            <div class="col-12">
+                <div class="jobs-empty">
+                    <h3>No jobs found</h3>
+                    <p>Try changing your search keywords or filters.</p>
+                </div>
+            </div>
+
+            {% endfor %}
+
         </div>
 
-        {% endfor %}
+        {% if page_obj.has_other_pages %}
+        <nav class="jobs-pagination">
+            <ul class="pagination justify-content-center">
+
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?q={{ query|urlencode }}&location={{ location|urlencode }}&job_type={{ job_type|urlencode }}&page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?q={{ query|urlencode }}&location={{ location|urlencode }}&job_type={{ job_type|urlencode }}&page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+        {% endif %}
 
     </div>
-
-
-    {% if page_obj.has_other_pages %}
-
-    <nav class="mt-5">
-
-        <ul class="pagination justify-content-center">
-
-            {% if page_obj.has_previous %}
-
-            <li class="page-item">
-
-                <a
-                    class="page-link"
-                    href="?q={{ query }}&location={{ location }}&job_type={{ job_type }}&page={{ page_obj.previous_page_number }}"
-                >
-                    Previous
-                </a>
-
-            </li>
-
-            {% endif %}
-
-
-            <li class="page-item active">
-
-                <span class="page-link">
-                    {{ page_obj.number }}
-                </span>
-
-            </li>
-
-
-            {% if page_obj.has_next %}
-
-            <li class="page-item">
-
-                <a
-                    class="page-link"
-                    href="?q={{ query }}&location={{ location }}&job_type={{ job_type }}&page={{ page_obj.next_page_number }}"
-                >
-                    Next
-                </a>
-
-            </li>
-
-            {% endif %}
-
-        </ul>
-
-    </nav>
-
-    {% endif %}
-
 </div>
 
 {% endblock %}

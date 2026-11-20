@@ -1,212 +1,272 @@
 {% extends "base.html" %}
 
-{% block title %}
-Edit Job | HireFlow
-{% endblock %}
+{% block title %}Edit Job | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .edit-job-page {
+        background: #f8fafc;
+        min-height: 80vh;
+        padding: 48px 0 64px;
+    }
 
-    <div class="row justify-content-center">
+    .edit-job-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
-        <div class="col-lg-8">
+    .edit-job-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 36px;
+    }
 
-            <div class="card shadow-sm">
+    .edit-job-heading {
+        margin-bottom: 30px;
+    }
 
-                <div class="card-body p-4">
+    .edit-job-heading h1 {
+        font-size: 27px;
+        font-weight: 700;
+        color: #172033;
+        margin-bottom: 8px;
+    }
 
-                    <h2 class="fw-bold mb-4">
-                        Edit Job
-                    </h2>
+    .edit-job-heading p {
+        color: #64748b;
+        margin: 0;
+        font-size: 14px;
+    }
 
-                    <form method="POST">
+    .edit-job-form label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+    }
 
-                        {% csrf_token %}
+    .edit-job-form .form-control,
+    .edit-job-form .form-select {
+        border: 1px solid #dbe1e8;
+        border-radius: 6px;
+        padding: 11px 13px;
+        font-size: 14px;
+        color: #172033;
+        background-color: white;
+    }
 
-                        <div class="mb-3">
+    .edit-job-form .form-control:focus,
+    .edit-job-form .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
 
-                            <label class="form-label">
-                                Job Title
-                            </label>
+    .edit-job-form textarea {
+        resize: vertical;
+        line-height: 1.6;
+    }
 
-                            <input
-                                type="text"
-                                name="title"
-                                value="{{ job.title }}"
-                                class="form-control"
-                                required
-                            >
+    .edit-job-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+    }
 
-                        </div>
+    .edit-job-actions button,
+    .edit-job-actions a {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
+    .save-job-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+    }
 
-                        <div class="mb-3">
+    .save-job-btn:hover {
+        background: #1d4ed8;
+    }
 
-                            <label class="form-label">
-                                Company
-                            </label>
+    .cancel-job-btn {
+        background: #f1f5f9;
+        color: #334155;
+    }
 
-                            <input
-                                type="text"
-                                name="company"
-                                value="{{ job.company }}"
-                                class="form-control"
-                                required
-                            >
+    .cancel-job-btn:hover {
+        background: #e2e8f0;
+        color: #172033;
+    }
 
-                        </div>
+    @media (max-width: 576px) {
+        .edit-job-page {
+            padding: 25px 0 40px;
+        }
 
+        .edit-job-card {
+            padding: 22px;
+        }
 
-                        <div class="mb-3">
+        .edit-job-actions {
+            flex-direction: column;
+        }
 
-                            <label class="form-label">
-                                Location
-                            </label>
+        .edit-job-actions button,
+        .edit-job-actions a {
+            text-align: center;
+        }
+    }
+</style>
 
-                            <input
-                                type="text"
-                                name="location"
-                                value="{{ job.location }}"
-                                class="form-control"
-                                required
-                            >
+<div class="edit-job-page">
+    <div class="edit-job-container">
 
-                        </div>
+        <div class="edit-job-card">
 
+            <div class="edit-job-heading">
+                <h1>Edit Job</h1>
+                <p>Update the details of your job posting.</p>
+            </div>
 
-                        <div class="mb-3">
+            <form method="POST" class="edit-job-form">
+                {% csrf_token %}
 
-                            <label class="form-label">
-                                Salary
-                            </label>
-
-                            <input
-                                type="number"
-                                name="salary"
-                                value="{{ job.salary }}"
-                                class="form-control"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Job Type
-                            </label>
-
-                            <select
-                                name="job_type"
-                                class="form-select"
-                                required
-                            >
-
-                                <option value="Full Time"
-                                    {% if job.job_type == "Full Time" %}selected{% endif %}>
-                                    Full Time
-                                </option>
-
-                                <option value="Part Time"
-                                    {% if job.job_type == "Part Time" %}selected{% endif %}>
-                                    Part Time
-                                </option>
-
-                                <option value="Internship"
-                                    {% if job.job_type == "Internship" %}selected{% endif %}>
-                                    Internship
-                                </option>
-
-                                <option value="Contract"
-                                    {% if job.job_type == "Contract" %}selected{% endif %}>
-                                    Contract
-                                </option>
-
-                                <option value="Remote"
-                                    {% if job.job_type == "Remote" %}selected{% endif %}>
-                                    Remote
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Skills
-                            </label>
-
-                            <input
-                                type="text"
-                                name="skills"
-                                value="{{ job.skills }}"
-                                class="form-control"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Requirements
-                            </label>
-
-                            <textarea
-                                name="requirements"
-                                class="form-control"
-                                rows="5"
-                                required
-                            >{{ job.requirements }}</textarea>
-
-                        </div>
-
-
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Description
-                            </label>
-
-                            <textarea
-                                name="description"
-                                class="form-control"
-                                rows="6"
-                                required
-                            >{{ job.description }}</textarea>
-
-                        </div>
-
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            Save Changes
-                        </button>
-
-                        <a
-                            href="{% url 'my_jobs' %}"
-                            class="btn btn-secondary"
-                        >
-                            Cancel
-                        </a>
-
-                    </form>
-
+                <div class="mb-3">
+                    <label for="title">Job Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{ job.title }}"
+                        class="form-control"
+                        required
+                    >
                 </div>
 
-            </div>
+                <div class="mb-3">
+                    <label for="company">Company</label>
+                    <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        value="{{ job.company }}"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="location">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value="{{ job.location }}"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="salary">Salary</label>
+                    <input
+                        type="number"
+                        id="salary"
+                        name="salary"
+                        value="{{ job.salary }}"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="job_type">Job Type</label>
+                    <select
+                        id="job_type"
+                        name="job_type"
+                        class="form-select"
+                        required
+                    >
+                        <option value="Full Time" {% if job.job_type == "Full Time" %}selected{% endif %}>
+                            Full Time
+                        </option>
+
+                        <option value="Part Time" {% if job.job_type == "Part Time" %}selected{% endif %}>
+                            Part Time
+                        </option>
+
+                        <option value="Internship" {% if job.job_type == "Internship" %}selected{% endif %}>
+                            Internship
+                        </option>
+
+                        <option value="Contract" {% if job.job_type == "Contract" %}selected{% endif %}>
+                            Contract
+                        </option>
+
+                        <option value="Remote" {% if job.job_type == "Remote" %}selected{% endif %}>
+                            Remote
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="skills">Skills</label>
+                    <input
+                        type="text"
+                        id="skills"
+                        name="skills"
+                        value="{{ job.skills }}"
+                        class="form-control"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="requirements">Requirements</label>
+                    <textarea
+                        id="requirements"
+                        name="requirements"
+                        class="form-control"
+                        rows="5"
+                        required
+                    >{{ job.requirements }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description">Job Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="6"
+                        required
+                    >{{ job.description }}</textarea>
+                </div>
+
+                <div class="edit-job-actions">
+                    <button type="submit" class="save-job-btn">
+                        Save Changes
+                    </button>
+
+                    <a href="{% url 'my_jobs' %}" class="cancel-job-btn">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
 
         </div>
 
     </div>
-
 </div>
 
 {% endblock %}

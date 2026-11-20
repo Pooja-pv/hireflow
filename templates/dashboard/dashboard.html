@@ -4,84 +4,269 @@
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .hf-dashboard {
+        background: #f7f8fc;
+        min-height: 85vh;
+        padding: 55px 0 70px;
+        color: #1e293b;
+    }
 
-    <div class="mb-5">
+    .hf-container {
+        max-width: 1100px;
+    }
 
-        <h1 class="fw-bold">
-            Welcome, {{ user.first_name|default:user.username }}!
-        </h1>
+    .hf-welcome {
+        margin-bottom: 35px;
+    }
 
-        <p class="text-muted">
-            Find your next opportunity with HireFlow.
-        </p>
+    .hf-eyebrow {
+        display: inline-block;
+        color: #315efb;
+        background: #edf1ff;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
 
-    </div>
+    .hf-welcome h1 {
+        font-size: 32px;
+        font-weight: 750;
+        letter-spacing: -0.8px;
+        margin-bottom: 10px;
+        color: #172033;
+    }
 
+    .hf-welcome p {
+        color: #7b8497;
+        font-size: 15px;
+        margin: 0;
+    }
 
-    <div class="row g-4">
+    .hf-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 22px;
+    }
 
-        <div class="col-md-4">
+    .hf-card {
+        background: #fff;
+        border: 1px solid #e9edf5;
+        border-radius: 17px;
+        padding: 30px;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
 
-            <div class="card shadow-sm h-100">
+    .hf-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(30, 41, 59, .06);
+    }
 
-                <div class="card-body">
+    .hf-feature {
+        background: #edf2ff;
+        border-color: #e2e9ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 285px;
+    }
 
-                    <h4 class="fw-bold">
-                        Find Jobs
-                    </h4>
+    .hf-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: #fff;
+        color: #315efb;
+        font-size: 23px;
+    }
 
-                    <p class="text-muted">
-                        Explore available opportunities.
+    .hf-feature h2 {
+        color: #172b59;
+        font-size: 25px;
+        font-weight: 750;
+        margin: 22px 0 10px;
+    }
+
+    .hf-feature p {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.7;
+        max-width: 390px;
+        margin-bottom: 20px;
+    }
+
+    .hf-applications h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #263247;
+        margin: 20px 0 8px;
+    }
+
+    .hf-count {
+        font-size: 43px;
+        font-weight: 750;
+        color: #315efb;
+        margin: 22px 0 2px;
+        line-height: 1.2;
+    }
+
+    .hf-muted {
+        color: #8490a3;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .hf-btn {
+        display: inline-block;
+        text-decoration: none;
+        padding: 11px 19px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 650;
+        transition: .2s ease;
+        margin-top: 18px;
+    }
+
+    .hf-btn-primary {
+        background: #315efb;
+        color: #fff;
+    }
+
+    .hf-btn-primary:hover {
+        background: #244bd6;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .hf-btn-outline {
+        border: 1px solid #dce3f0;
+        color: #315efb;
+        background: #fff;
+    }
+
+    .hf-btn-outline:hover {
+        background: #f3f6ff;
+        color: #244bd6;
+    }
+
+    .hf-bottom {
+        margin-top: 23px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .hf-bottom h3 {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 7px;
+        color: #263247;
+    }
+
+    @media (max-width: 768px) {
+        .hf-dashboard {
+            padding: 35px 0 50px;
+        }
+
+        .hf-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hf-welcome h1 {
+            font-size: 26px;
+        }
+
+        .hf-card {
+            padding: 24px;
+        }
+
+        .hf-feature {
+            min-height: 260px;
+        }
+    }
+</style>
+
+<div class="hf-dashboard">
+    <div class="container hf-container">
+
+        <div class="hf-welcome">
+            <span class="hf-eyebrow">APPLICANT DASHBOARD</span>
+
+            <h1>
+                Welcome back, {{ user.first_name|default:user.username }}!
+            </h1>
+
+            <p>
+                Find opportunities, manage your applications and take the next step in your career.
+            </p>
+        </div>
+
+        <div class="hf-grid">
+
+            <!-- Explore Jobs -->
+            <div class="hf-card hf-feature">
+                <div>
+                    <div class="hf-icon">⌕</div>
+
+                    <h2>Find your next opportunity.</h2>
+
+                    <p>
+                        Discover job openings that match your interests
+                        and skills. Your next career move starts here.
                     </p>
-
-                    <a
-                        href="{% url 'job_list' %}"
-                        class="btn btn-primary"
-                    >
-                        Browse Jobs
-                    </a>
-
                 </div>
 
+                <div>
+                    <a href="{% url 'job_list' %}" class="hf-btn hf-btn-primary">
+                        Explore Jobs →
+                    </a>
+                </div>
+            </div>
+
+            <!-- My Applications -->
+            <div class="hf-card hf-applications">
+                <div class="hf-icon">▤</div>
+
+                <h3>My Applications</h3>
+
+                <p class="hf-muted">
+                    Keep track of your job applications.
+                </p>
+
+                <div class="hf-count">{{ applications_count }}</div>
+
+                <p class="hf-muted">Total applications submitted</p>
+
+                <a href="{% url 'my_applications' %}" class="hf-btn hf-btn-outline">
+                    View Applications →
+                </a>
             </div>
 
         </div>
 
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="fw-bold">
-                        My Applications
-                    </h4>
-
-                    <p class="text-muted">
-                        Track your job applications.
-                    </p>
-
-                    <h3>
-                        {{ applications_count }}
-                    </h3>
-
-                    <a
-                        href="{% url 'my_applications' %}"
-                        class="btn btn-outline-primary"
-                    >
-                        View Applications
-                    </a>
-
-                </div>
-
+        <!-- Bottom Section -->
+        <div class="hf-card hf-bottom">
+            <div>
+                <h3>Ready for your next career move?</h3>
+                <p class="hf-muted">
+                    Keep exploring and don't miss out on new opportunities.
+                </p>
             </div>
 
+            <a href="{% url 'job_list' %}" class="hf-btn hf-btn-primary">
+                Browse Jobs →
+            </a>
         </div>
 
     </div>
-
 </div>
 
 {% endblock %}

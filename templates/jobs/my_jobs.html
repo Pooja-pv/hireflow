@@ -1,138 +1,263 @@
 {% extends "base.html" %}
 
-{% block title %}
-My Jobs | HireFlow
-{% endblock %}
+{% block title %}My Jobs | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .my-jobs-page {
+        background: #f8fafc;
+        min-height: 80vh;
+        padding: 48px 0 64px;
+    }
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    .my-jobs-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
-        <div>
-            <h1 class="fw-bold">
-                My Jobs
-            </h1>
+    .jobs-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 32px;
+    }
 
-            <p class="text-muted">
-                Manage the jobs you have posted.
-            </p>
-        </div>
+    .jobs-header h1 {
+        font-size: 30px;
+        font-weight: 700;
+        color: #172033;
+        margin-bottom: 8px;
+    }
 
-        <a
-            href="{% url 'create_job' %}"
-            class="btn btn-primary"
-        >
-            + Post New Job
-        </a>
+    .jobs-header p {
+        color: #64748b;
+        margin: 0;
+    }
 
-    </div>
+    .post-job-btn {
+        background: #2563eb;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+    }
 
+    .post-job-btn:hover {
+        background: #1d4ed8;
+        color: white;
+    }
 
-    {% if messages %}
+    .job-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
 
-        {% for message in messages %}
+    .job-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 24px;
+        transition: border-color 0.2s ease;
+    }
 
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
+    .job-card:hover {
+        border-color: #cbd5e1;
+    }
+
+    .job-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #172033;
+        margin-bottom: 6px;
+    }
+
+    .job-company {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .job-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .job-tag {
+        background: #f1f5f9;
+        color: #475569;
+        padding: 6px 10px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    .application-count {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 16px;
+        margin-bottom: 20px;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .application-count strong {
+        color: #172033;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .job-actions {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+    }
+
+    .job-actions a {
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .view-btn {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .edit-btn {
+        background: #f1f5f9;
+        color: #334155;
+    }
+
+    .delete-btn {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .empty-jobs {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 55px 20px;
+        text-align: center;
+    }
+
+    .empty-jobs h3 {
+        color: #172033;
+        font-size: 21px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .empty-jobs p {
+        color: #64748b;
+        margin-bottom: 20px;
+    }
+
+    .jobs-alert {
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 700px) {
+        .job-list {
+            grid-template-columns: 1fr;
+        }
+
+        .jobs-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .jobs-header h1 {
+            font-size: 26px;
+        }
+    }
+</style>
+
+<div class="my-jobs-page">
+    <div class="my-jobs-container">
+
+        <div class="jobs-header">
+            <div>
+                <h1>My Jobs</h1>
+                <p>Manage your job postings and track applications.</p>
             </div>
 
-        {% endfor %}
+            <a href="{% url 'create_job' %}" class="post-job-btn">
+                Post New Job
+            </a>
+        </div>
 
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} jobs-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
+        {% if jobs %}
+            <div class="job-list">
 
-    <div class="row g-4">
+                {% for job in jobs %}
+                    <div class="job-card">
 
-        {% for job in jobs %}
+                        <h2 class="job-title">{{ job.title }}</h2>
 
-        <div class="col-md-6 col-lg-4">
+                        <p class="job-company">{{ job.company }}</p>
 
-            <div class="card shadow-sm h-100">
+                        <div class="job-details">
+                            <span class="job-tag">{{ job.location }}</span>
+                            <span class="job-tag">{{ job.job_type }}</span>
 
-                <div class="card-body">
+                            {% if job.salary %}
+                                <span class="job-tag">₹{{ job.salary }}</span>
+                            {% endif %}
+                        </div>
 
-                    <h4 class="fw-bold">
-                        {{ job.title }}
-                    </h4>
+                        <div class="application-count">
+                            Applications
+                            <strong>{{ job.applications.count }}</strong>
+                        </div>
 
-                    <p class="text-muted mb-2">
-                        {{ job.company }}
-                    </p>
+                        <div class="job-actions">
+                            <a href="{% url 'job_detail' job.id %}" class="view-btn">
+                                View
+                            </a>
 
-                    <p>
-                        📍 {{ job.location }}
-                    </p>
+                            <a href="{% url 'edit_job' job.id %}" class="edit-btn">
+                                Edit
+                            </a>
 
-                    <p>
-                        💰 ₹{{ job.salary }}
-                    </p>
-
-                    <p>
-                        💼 {{ job.job_type }}
-                    </p>
-
-                    <p>
-                        📄 Applications:
-                        <strong>
-                            {{ job.applications.count }}
-                        </strong>
-                    </p>
-
-                    <hr>
-
-                    <div class="d-flex gap-2 flex-wrap">
-
-                        <a
-                            href="{% url 'job_detail' job.id %}"
-                            class="btn btn-primary"
-                        >
-                            View
-                        </a>
-
-                        <a
-                            href="{% url 'edit_job' job.id %}"
-                            class="btn btn-warning"
-                        >
-                            Edit
-                        </a>
-
-                        <a
-                            href="{% url 'delete_job' job.id %}"
-                            class="btn btn-danger"
-                        >
-                            Delete
-                        </a>
+                            <a href="{% url 'delete_job' job.id %}" class="delete-btn">
+                                Delete
+                            </a>
+                        </div>
 
                     </div>
-
-                </div>
+                {% endfor %}
 
             </div>
+        {% else %}
+            <div class="empty-jobs">
+                <h3>No jobs posted yet</h3>
+                <p>Your job postings will appear here once you create one.</p>
 
-        </div>
-
-        {% empty %}
-
-        <div class="col-12">
-
-            <div class="alert alert-info">
-
-                You have not posted any jobs yet.
-
-                <a href="{% url 'create_job' %}">
-                    Post your first job
+                <a href="{% url 'create_job' %}" class="post-job-btn">
+                    Post Your First Job
                 </a>
-
             </div>
-
-        </div>
-
-        {% endfor %}
+        {% endif %}
 
     </div>
-
 </div>
 
 {% endblock %}

@@ -1,58 +1,119 @@
 {% extends "base.html" %}
 
-{% block title %}
-Delete Job | HireFlow
-{% endblock %}
+{% block title %}Delete Job | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .delete-job-page {
+        background: #f8fafc;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
 
-    <div class="row justify-content-center">
+    .delete-job-card {
+        width: 100%;
+        max-width: 480px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 40px;
+        text-align: center;
+    }
 
-        <div class="col-md-6">
+    .delete-job-card h1 {
+        color: #172033;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
 
-            <div class="card shadow-sm">
+    .delete-job-card p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
 
-                <div class="card-body p-5 text-center">
+    .delete-job-card strong {
+        color: #172033;
+    }
 
-                    <h2 class="fw-bold mb-3">
-                        Delete Job
-                    </h2>
+    .delete-job-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
 
-                    <p class="text-muted mb-4">
-                        Are you sure you want to delete
-                        <strong>{{ job.title }}</strong>?
-                    </p>
+    .delete-job-actions button,
+    .delete-job-actions a {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-                    <form method="POST">
+    .confirm-delete-btn {
+        background: #dc2626;
+        color: white;
+        border: none;
+    }
 
-                        {% csrf_token %}
+    .confirm-delete-btn:hover {
+        background: #b91c1c;
+    }
 
-                        <button
-                            type="submit"
-                            class="btn btn-danger"
-                        >
-                            Yes, Delete
-                        </button>
+    .cancel-delete-btn {
+        background: #f1f5f9;
+        color: #334155;
+    }
 
-                        <a
-                            href="{% url 'my_jobs' %}"
-                            class="btn btn-secondary"
-                        >
-                            Cancel
-                        </a>
+    .cancel-delete-btn:hover {
+        background: #e2e8f0;
+        color: #172033;
+    }
 
-                    </form>
+    @media (max-width: 480px) {
+        .delete-job-card {
+            padding: 28px 20px;
+        }
 
-                </div>
+        .delete-job-actions {
+            flex-direction: column;
+        }
+    }
+</style>
 
+<div class="delete-job-page">
+    <div class="delete-job-card">
+
+        <h1>Delete Job</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong>{{ job.title }}</strong>?
+            This action cannot be undone.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="delete-job-actions">
+                <button type="submit" class="confirm-delete-btn">
+                    Yes, Delete
+                </button>
+
+                <a href="{% url 'my_jobs' %}" class="cancel-delete-btn">
+                    Cancel
+                </a>
             </div>
-
-        </div>
+        </form>
 
     </div>
-
 </div>
 
 {% endblock %}

@@ -1,201 +1,294 @@
 {% extends "base.html" %}
 
-{% block title %}
-Recruiter Dashboard | HireFlow
-{% endblock %}
+{% block title %}Recruiter Dashboard | HireFlow{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .recruiter-dashboard {
+        background: #f8f9fc;
+        min-height: 85vh;
+        padding: 48px 0 65px;
+    }
 
-    <div class="mb-5">
+    .recruiter-container {
+        max-width: 1120px;
+    }
 
-        <h1 class="fw-bold">
-            Recruiter Dashboard
-        </h1>
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 36px;
+    }
 
-        <p class="text-muted">
-            Manage your hiring process from one place.
-        </p>
+    .dashboard-header h1 {
+        font-size: 29px;
+        font-weight: 700;
+        letter-spacing: -0.7px;
+        color: #182338;
+        margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+        color: #778196;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .header-action {
+        text-decoration: none;
+        background: #315efb;
+        color: white;
+        padding: 11px 19px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background .2s ease;
+    }
+
+    .header-action:hover {
+        background: #244bd6;
+        color: white;
+    }
+
+    .section-heading {
+        font-size: 17px;
+        font-weight: 700;
+        color: #253047;
+        margin-bottom: 17px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 38px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e9edf3;
+        border-radius: 11px;
+        padding: 23px;
+    }
+
+    .stat-card p {
+        color: #778196;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 13px;
+    }
+
+    .stat-card h2 {
+        font-size: 31px;
+        line-height: 1;
+        font-weight: 700;
+        color: #182338;
+        margin: 0;
+    }
+
+    .stat-card:first-child {
+        border-top: 3px solid #315efb;
+    }
+
+    .stat-card:nth-child(2) {
+        border-top: 3px solid #8b9cf8;
+    }
+
+    .stat-card:nth-child(3) {
+        border-top: 3px solid #e6ad55;
+    }
+
+    .stat-card:nth-child(4) {
+        border-top: 3px solid #52a889;
+    }
+
+    .management-section {
+        background: #fff;
+        border: 1px solid #e9edf3;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .management-header {
+        padding: 23px 26px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .management-header h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #253047;
+        margin: 0 0 5px;
+    }
+
+    .management-header p {
+        color: #8490a3;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .management-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .management-card {
+        padding: 27px 25px;
+        min-height: 190px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .management-card + .management-card {
+        border-left: 1px solid #edf0f5;
+    }
+
+    .management-card h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #253047;
+        margin-bottom: 9px;
+    }
+
+    .management-card p {
+        color: #8490a3;
+        font-size: 13px;
+        line-height: 1.7;
+        margin-bottom: 22px;
+    }
+
+    .management-link {
+        margin-top: auto;
+        text-decoration: none;
+        color: #315efb;
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+    .management-link:hover {
+        color: #244bd6;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 850px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .management-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .management-card + .management-card {
+            border-left: none;
+            border-top: 1px solid #edf0f5;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .recruiter-dashboard {
+            padding: 32px 0 45px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 25px;
+        }
+
+        .stats-grid {
+            gap: 12px;
+        }
+
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-card h2 {
+            font-size: 27px;
+        }
+
+        .management-card {
+            padding: 23px;
+        }
+    }
+</style>
+
+<div class="recruiter-dashboard">
+    <div class="container recruiter-container">
+
+        <div class="dashboard-header">
+            <div>
+                <h1>Recruiter Dashboard</h1>
+                <p>Manage your hiring activities and find the right candidates.</p>
+            </div>
+
+            <a href="{% url 'create_job' %}" class="header-action">
+                Post a New Job
+            </a>
+        </div>
+
+        <h2 class="section-heading">Hiring Overview</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Jobs Posted</p>
+                <h2>{{ jobs_count }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Total Applications</p>
+                <h2>{{ applications_count }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Shortlisted</p>
+                <h2>{{ shortlisted_count }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Hired</p>
+                <h2>{{ hired_count }}</h2>
+            </div>
+        </div>
+
+        <div class="management-section">
+            <div class="management-header">
+                <h2>Manage Hiring</h2>
+                <p>Access your job listings and candidate applications.</p>
+            </div>
+
+            <div class="management-grid">
+                <div class="management-card">
+                    <h3>Post a Job</h3>
+                    <p>Create and publish a new job opening to attract qualified candidates.</p>
+                    <a href="{% url 'create_job' %}" class="management-link">
+                        Create a job listing →
+                    </a>
+                </div>
+
+                <div class="management-card">
+                    <h3>My Jobs</h3>
+                    <p>View your existing job postings and manage their details.</p>
+                    <a href="{% url 'my_jobs' %}" class="management-link">
+                        Manage job listings →
+                    </a>
+                </div>
+
+                <div class="management-card">
+                    <h3>Applications</h3>
+                    <p>Review candidate applications and manage your recruitment process.</p>
+                    <a href="{% url 'recruiter_applications' %}" class="management-link">
+                        Review applications →
+                    </a>
+                </div>
+            </div>
+        </div>
 
     </div>
-
-
-    <div class="row g-4 mb-5">
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm dashboard-card">
-
-                <div class="card-body">
-
-                    <p class="text-muted mb-1">
-                        Jobs Posted
-                    </p>
-
-                    <h2 class="fw-bold">
-                        {{ jobs_count }}
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm dashboard-card">
-
-                <div class="card-body">
-
-                    <p class="text-muted mb-1">
-                        Applications
-                    </p>
-
-                    <h2 class="fw-bold">
-                        {{ applications_count }}
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm dashboard-card">
-
-                <div class="card-body">
-
-                    <p class="text-muted mb-1">
-                        Shortlisted
-                    </p>
-
-                    <h2 class="fw-bold">
-                        {{ shortlisted_count }}
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-3">
-
-            <div class="card shadow-sm dashboard-card">
-
-                <div class="card-body">
-
-                    <p class="text-muted mb-1">
-                        Hired
-                    </p>
-
-                    <h2 class="fw-bold">
-                        {{ hired_count }}
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="row g-4">
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="fw-bold">
-                        Post a Job
-                    </h4>
-
-                    <p class="text-muted">
-                        Create a new job opportunity.
-                    </p>
-
-                    <a
-                        href="{% url 'create_job' %}"
-                        class="btn btn-primary"
-                    >
-                        Post Job
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="fw-bold">
-                        My Jobs
-                    </h4>
-
-                    <p class="text-muted">
-                        Manage your job postings.
-                    </p>
-
-                    <a
-                        href="{% url 'my_jobs' %}"
-                        class="btn btn-outline-primary"
-                    >
-                        Manage Jobs
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="fw-bold">
-                        Applications
-                    </h4>
-
-                    <p class="text-muted">
-                        Review candidates.
-                    </p>
-
-                    <a
-                        href="{% url 'recruiter_applications' %}"
-                        class="btn btn-outline-primary"
-                    >
-                        View Applications
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
 
 {% endblock %}
